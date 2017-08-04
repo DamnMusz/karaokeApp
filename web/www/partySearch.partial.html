@@ -1,0 +1,280 @@
+
+<head>
+	<link rel="stylesheet" type="text/css" href="/www/css/partySearch.css">
+	<meta name = "viewport" content = "width = device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;">
+</head>
+
+<div id="all">
+
+<div class="box-header with-border">
+    <h3 class="box-title">Buscar fiestas</h3>
+</div>
+<div class="box-body">
+   
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>Hoy</h3>
+                    <p>Fecha</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <a href="" ng-click="enableTodayPartysMenu()" class="small-box-footer">
+                    Elegir <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>Cerca</h3>
+                    <p>Lugar</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-map"></i>
+                </div>
+                <a href="" ng-click="enableCloseByPartysMenu()" class="small-box-footer">
+                    Elegir <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>Todas</h3>
+                    <p>Tipos de fiestas</p>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-music"></i>
+                </div>
+                <a href="" ng-click="enablePartyTypesMenu()" class="small-box-footer">
+                    Elegir <i class="fa fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+	<!--<div id="searchBar2" class="row"> 
+		<div id="secc" class="col-xs-4">
+			<div id="menuOption">
+				<button id="btn" ng-click="enableTodayPartysMenu()" class="btn btn-success">
+					<img id="icon" src="/dist/img/icons/calendarIcon.png" class="img" alt="Cinque Terre"></img>
+				</button>
+	
+				<div id="text"> Hoy </div>
+			</div>
+		</div>
+
+		<div id="secc2" class="col-xs-4">			
+			<div id="menuOption">
+				<button id="btn" ng-click="enableCloseByPartysMenu()" class="btn btn-success">
+					<img id="icon" src="/dist/img/icons/mpIcon.png" class="img" alt="Cinque Terre"></img>		
+				</button>
+
+				<div id="text"> cerca </div>
+			</div>
+		</div>
+
+		<div id="secc3" class="col-xs-4">		
+			<div id="menuOption">
+				<button id="btn" ng-click="enablePartyTypesMenu()" class="btn btn-success">
+					<img id="icon" src="/dist/img/icons/partyIcon.png" class="img" alt="Cinque Terre"></img>		
+				</button>
+				
+				<div id="text"> todas </div>
+			</div>
+		</div>
+	</div>-->
+
+	<div id="menuTodaysPartys" ng-show="showMenu == 1">
+		<div id="dateForm">
+			<label>Fecha y duración</label>
+
+			<div class="form-group" id="dateSelect">
+				<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-clock-o"></i>
+					</div>
+				
+					<input date-range-picker class="form-control pull-right  date-picker" type="text" ng-model="datePicker.date" options="datePicker.options" />
+				</div>
+			</div>
+
+			<div class="form-group" id="dateButton">
+				<button id="okBtn" ng-click="findTodayPartys()" class="btn btn-success">
+					<img src="/dist/img/icons/go.png" class="img-responsive" alt="Cinque Terre"></img>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="menuCloseByPartys" ng-show="showMenu == 2">
+
+		<div id = "closeBySelection" ng-show="online">
+			<div id="current">Initializing...</div>
+
+			<div id="map_canvas" style="width:300px; height:300px"></div>
+			<meta name = "viewport" id="mapView">			
+		</div>
+		
+		<div id = "closeBySelection" ng-show="!online">
+			<select ng-options="loc as loc.descripcion for loc in hardLocations track by loc.id" ng-model="location">
+				<option value="">-- Elija la ubicacion --</option>
+			</select> 
+		</div>
+
+		<div id = "closeBySelection">
+			max: 
+			<input id="toleranceForm" class="form-control-unstyled" value="15"></input>
+			Km
+
+			<button id="okBtn" ng-click="findCloseByPartys()" class="btn btn-success-unstyled">
+				<img id="iconOk" src="/dist/img/icons/go.png" class="img-responsive" alt="Cinque Terre"></img>
+			</button>
+		</div>
+		
+	</div>
+
+	<div id="menuPartyTypes" ng-show="showMenu == 3">
+				<div class="form-group">
+					<label>Tipo de fiesta: </label> <span ng-repeat="item in selectedItems" >{{item.text + ($last?'':', ') }}</span>
+					<div class="row">
+						<pre-go-selector available-items="partyTypes" selected-items="selectedItems"/>
+					</div>					
+				</div> 
+
+		<div id = "typeSelection">
+			<button id="okBtn" ng-click="getAllPartys()" class="btn btn-success">
+				<img src="/dist/img/icons/go.png" class="img-responsive" alt="Cinque Terre"></img>
+			</button>
+		</div>
+	</div>
+	
+			<div ng-show="promoted_partys.length > 0">
+				<h4>Fiestas destacadas:</h4>
+			</div>
+
+			<div ng-repeat="pty in promoted_partys">
+				<div class="box box-warning" style="background: linear-gradient(to bottom, white, #FFE4C4);">
+					<a ng-click = "viewParty(pty.nombre, pty.id)" id="link">
+						<div class="row">
+							<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+								<div class="container" style="vertical-align: middle; display: table-cell;">
+									<img class="img-responsive" ng-src={{pty.imagenDeFondo}} alt="" id="imagenDeFiestaPromovida">
+								</div>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-9 col-lg-9 title">
+								<div class="row">
+									<div id="partyName">{{pty.nombre}}</div>
+
+									<div id="partyStuff" class="row">
+										<div id="dist" class="col-xs-4">
+											<img id="icon" src="/dist/img/icons/mpIcon.png" class="img-responsive" alt="Cinque Terre"></img>	
+											<div id="text"> {{pty.dist}}km</div>
+										</div>				
+
+										<div id="people" class="col-xs-4">
+											<img id="icon" src="/dist/img/icons/pplIconBlack.png" class="img-responsive" alt="Cinque Terre"></img>	
+											<div id="text"> {{pty.cantidadDeGente}} </div>
+										</div>
+
+										<div id="fireIcon" class="col-xs-4" ng-style="{'background-image':'url({{pty.flama}})'}"></div>
+									</div>
+
+								</div>
+								<hr>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div ng-show="common_partys.length > 0">
+				<h4>Fiestas regulares:</h4>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12" ng-repeat="pty in common_partys">
+					<a ng-click=  "viewParty(pty.nombre, pty.id)" id="link">
+						<div class="col-lg-6"j>
+							<div class="box" style="background: linear-gradient(to bottom, white, silver);">
+								<div class="row">
+									<div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+										<div class="container" style="vertical-align: middle; display: table-cell;">
+											<img id="imagenDeFiestaRegular" class="img" src={{pty.imagenDeFondo}} alt="">
+										</div>
+									</div>
+									<div class="col-xs-9 col-sm-9 col-md-10 col-lg-10" style="padding-top: 15px">
+										<div class="row">
+											<div id="partyName">{{pty.nombre}}</div>
+
+											<div id="partyStuff" class="row">
+												<div id="dist" class="col-xs-4">
+													<img id="icon" src="/dist/img/icons/mpIcon.png" class="img-responsive" alt="Cinque Terre"></img>	
+													<div id="text"> {{pty.dist}}km</div>
+												</div>				
+
+												<div id="people" class="col-xs-4">
+													<img id="icon" src="/dist/img/icons/pplIcon.png" class="img-responsive" alt="Cinque Terre"></img>	
+													<div id="text"> {{pty.cantidadDeGente}} </div>
+												</div>
+
+												<div id="fireIcon" class="col-xs-4" ng-style="{'background-image':'url({{pty.flama}})'}"></div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+
+<!--
+	<div id="ptys">
+		<div class="list-group" ng-repeat="pty in promoted_partys">
+			<a id="promParty" href="#" class="list-group-item" ng-style="{'background-image':'url({{pty.imagenBanner}})'}">	
+
+				<div id="partyStuff" class="row">
+					<div id="dist" class="col-xs-4">
+						<img id="icon" src="/dist/img/icons/mpIcon.png" href="#" class="img-responsive" alt="Cinque Terre"></img>	
+						<div id="text"> {{pty.dist}}km</div>
+					</div>				
+
+					<div id="people" class="col-xs-4">
+						<img id="icon" src="/dist/img/icons/pplIcon.png" href="#" class="img-responsive" alt="Cinque Terre"></img>	
+						<div id="text"> {{pty.cantidadDeGente}} </div>
+					</div>
+
+					<div id="fireIcon" class="col-xs-4" ng-style="{'background-image':'url({{pty.flama}})'}"></div>
+				</div>
+			</a>
+		</div>
+
+		<div class="list-group" ng-repeat="pty in common_partys">
+			<a id="commonParty" href="#" class="list-group-item" ng-style="{'background-image':'url({{pty.imagenBanner}})', 'background-size':'cover'}">	
+
+				<div id="partyStuff" class="row">
+					<div id="dist" class="col-xs-4">
+						<img id="icon" src="/dist/img/icons/mpIcon.png" href="#" class="img-responsive" alt="Cinque Terre"></img>	
+						<div id="text"> {{pty.dist}}km</div>
+					</div>				
+					<div id="people" class="col-xs-4">
+						<img id="icon" src="/dist/img/icons/pplIcon.png" href="#" class="img-responsive" alt="Cinque Terre"></img>	
+						<div id="text"> {{pty.cantidadDeGente}} </div>
+					</div>
+
+					<div id="fireIcon" class="col-xs-4" ng-style="{'background-image':'url({{pty.flama}})'}"></div>
+				</div>
+			</a>
+		</div>
+/!-->
+
+	</div>
+
+</div>
+

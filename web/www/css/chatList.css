@@ -1,0 +1,28 @@
+
+	#all{
+		text-align:left;		
+	}
+
+	#author{
+		text-align:center;
+		text-decoration:none;
+		color:black;
+	}
+
+	#message{
+		text-align:left;	
+		text-decoration:none;
+		color:black;	
+
+		font-size:small;
+	}
+
+	#img{
+		margin:auto;
+		margin-top: 10px;
+	}
+	
+	#postAuthor{
+		text-align:left;
+		font-weight:bold;
+	}

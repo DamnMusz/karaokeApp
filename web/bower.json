@@ -1,0 +1,41 @@
+{
+  "name": "AdminLTE",
+  "homepage": "http://almsaeedstudio.com",
+  "authors": [
+    "Abdullah Almsaeed <support@almsaeedstudio.com>"
+  ],
+  "description": "Admin dashboard and control panel template",
+  "main": [
+    "index2.html",
+    "dist/css/AdminLTE.css",
+    "dist/js/app.js",
+    "build/less/AdminLTE.less"
+  ],
+  "keywords": [
+    "css",
+    "js",
+    "html",
+    "template",
+    "admin",
+    "bootstrap",
+    "theme",
+    "backend",
+    "responsive"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "/.*",
+    "node_modules",
+    "bower_components",
+    "composer.json",
+    "documentation"
+  ],
+  "dependencies": {
+    "bootstrap-daterangepicker": "~2.1.13",
+    "angular-daterangepicker": "~0.2.2",
+    "angular-cookies": "~1.4.8",
+    "Ionicons": "ionicons#~2.0.1",
+    "jquery-ui": "jquery/jquery-ui#1.11.4",
+    "raphael": "~2.1.4"
+  }
+}
